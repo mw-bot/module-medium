@@ -85,8 +85,8 @@ class Medium
 
                 $function_cache_id = 'pull_content_' . $content_id;
 
-                $cache_content = $this->app->cache->get($function_cache_id, 'medium', 6*300);
-
+                $cache_content = $this->app->cache->get($function_cache_id, 'medium', 6 * 300);
+                //check if content has been cached in the last 30 min
                 if (($cache_content) != false) {
 
                     return $cache_content;
@@ -107,12 +107,10 @@ class Medium
                             $cont['id'] = $content_id;
                             $cont['content'] = $new_body;
                             $cont['allow_html'] = $new_body;
+                            //saves the new content in the db
                             $s = $this->app->db->save('content', $cont);
                             $this->app->cache->delete('content');
-
                         }
-
-
                     }
 
                 }
@@ -132,16 +130,13 @@ class Medium
         $args = func_get_args();
 
         foreach ($args as $k => $v) {
-
             $function_cache_id = $function_cache_id . serialize($k) . serialize($v);
         }
-
         $function_cache_id = 'module_' . __CLASS__ . __FUNCTION__ . crc32($function_cache_id);
 
         $cache_content = $this->app->cache->get($function_cache_id, 'db');
 
         if (($cache_content) != false) {
-
             return $cache_content;
         }
 
@@ -152,32 +147,18 @@ class Medium
         $fields_to_add[] = array('updated_on', 'datetime default NULL');
         $fields_to_add[] = array('created_on', 'datetime default NULL');
         $fields_to_add[] = array('expires_on', 'datetime default NULL');
-
         $fields_to_add[] = array('created_by', 'int(11) default NULL');
-
         $fields_to_add[] = array('edited_by', 'int(11) default NULL');
-
         $fields_to_add[] = array('url', 'TEXT default NULL');
         $fields_to_add[] = array('selector', 'TEXT default NULL');
-
         $fields_to_add[] = array('content_id', 'int(11) default NULL');
         $fields_to_add[] = array('content', 'LONGTEXT default NULL');
-
         $fields_to_add[] = array('is_active', "char(1) default 'y'");
-
         $this->app->db->build_table($table_name, $fields_to_add);
-
-
         $this->app->cache->save($fields_to_add, $function_cache_id, $cache_group = 'db');
         return true;
 
     }
-
-    function test()
-    {
-        print 'IT WORKS: ' . __CLASS__;
-    }
-
     function print_ui_field($content)
     {
         $cont_id = 0;

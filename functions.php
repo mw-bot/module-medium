@@ -1,8 +1,4 @@
 <?php
-if (!defined("MODULE_DB_MEDIUM")) {
-    define('MODULE_DB_MEDIUM', MW_TABLE_PREFIX . 'medium');
-}
-//autoload_append(dirname(__FILE__));
 include_once(__DIR__ . DS . 'Medium.php');
 event_bind('mw_admin_edit_page_advanced_settings', 'mw_medium_print_edit_content_menu');
 
@@ -12,8 +8,6 @@ function mw_medium_print_edit_content_menu($params = false)
 
     $medium = new Microweber\Medium();
 
-
-    //d(__DIR__.DS.'Medium.php');
     if ($params != false) {
         $api = $medium->print_ui_field($params);
     }
@@ -50,8 +44,7 @@ function mw_medium_get_settings_content($content_id = false)
 {
     $medium = new Microweber\Medium();
     if ($content_id != false) {
-
-        return $medium->get_settings($content_id);
+         return $medium->get_settings($content_id);
     }
 
 
